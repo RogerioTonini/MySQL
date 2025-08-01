@@ -13,8 +13,8 @@
         <!-- -->
         <body>
             <tr>
-                <td align="left"> 
-                    <a href="https://github.com/RogerioTonini/SQL_Comandos_Diversos/blob/main/MySQL/    sys/    Functions/      fx_DB_Exist.sql">fx_DB_Exist </a> 
+                <td align="left">
+                    <a href="https://github.com/RogerioTonini/MySQL/blob/main/sys/Functions/fx_DB_Exist.sql">fx_DB_Exist </a> 
                 </td>
                 <td align="left"> Verificar se o DB existe existe </td>
                 <td align="left">
@@ -25,7 +25,7 @@
             <!-- -->
             <tr>
             <td align="left">
-                <a href="https://github.com/RogerioTonini/SQL_Comandos_Diversos/blob/main/MySQL/sys/    Functions/      fx_IDX_Exist.sql">fx_IDX_Exist </a>
+                <a href="https://github.com/RogerioTonini/MySQL/blob/main/sys/Functions/fx_IDX_Exist.sql">fx_IDX_Exist </a>
             </td>
                 <td align="left"> Contar a quantidade de índices existentes. </td>
                 <td align="left">
@@ -37,26 +37,16 @@
             </tr>
             <!-- -->
             <tr>
-                <td align="left"> 
-                    <a href="https://github.com/RogerioTonini/SQL_Comandos_Diversos/blob/main/MySQL/sys/    Functions/      fx_TB_Exist.sql">fx_TB_Exist </a>
+                <td>
+                    <a href="https://github.com/RogerioTonini/MySQL/blob/main/sys/Functions/fx_SQL_Valid.sql">fx_SQL_Valid </a>
                 </td>
                 <td align="left"> Verificar se uma tabela existe em um banco de dados. </td>
             </tr>
-            <!-- -->
-            <tr> 
-                <td align="left">
-                    <a href="https://github.com/RogerioTonini/Ling_M"> Linguagem M</a>
-                </ td> 
-                <td align="center">
-                    <a href="https://learn.microsoft.com/pt-br/powerquery-m/" target="_blank"   rel="noreferrer"> </a>
+            <tr>
+                <td>
+                    <a href="https://github.com/RogerioTonini/MySQL/blob/main/sys/Functions/fx_TB_Exist.sql">fx_TB_Exist </a>
                 </td>
-            </tr>
-            <!-- -->
-            <tr> 
-                <td align="left"> <a href="https://github.com/RogerioTonini/SQL_Comandos_Diversos">   MS-SQL</a> </     td> 
-                <td align="center">
-                    <a href="https://www.microsoft.com/en-us/sql-server" target="_blank" rel="noreferrer"> </a>
-                </td>
+                <td align="left"> Validar o comando SQL dinâmico. </td>
             </tr>
         </body>
     </table>

@@ -1,0 +1,159 @@
+- Colunas DB:
+NUM_INDEX
+DataBase
+Data_Nome (DataNomeAtual)
+** Data_OffSet  - Este coluna é após a coluna [AnoFical]
+Ano_Index
+Ano_Num
+** Ano_OffSet - Este coluna é após a coluna [AnoFical]
+DataAnoInicio
+DataAnoFim
+AnoFiscal
+
+Mes_Index
+Mes_OffSet
+Mes_Num
+Mes_Nome
+Mes_Abrev
+Mes_Sigla
+MesAno_Num
+MesAno_Nome
+MesDia_Num
+MesDia_Nome
+
+DiaDoMes_Num
+DiaDoAno_Num
+DiaDaSemana_Num
+DiaDaSemana_Nome
+DiaDaSemana_Abrev
+DiaDaSemana_Sigla
+
+--- SEMANA ---
+--- Este conjunto de colunas é após a coluna [TrimestreAnoNomeAtual]
+Semana_Index        - Coluna origem [SemanaIndice]
+** Semana_OffSet     - Coluna origem [SemanaOffSet]
+SemanaMes_Num        - Coluna origem [SemanaDoMesNum]
+SemanaAno_Num        - Coluna origem [SemanaAnoNum]
+SemanaMes_Abrev      - Coluna origem [SemanaAnoNomeAtual]    - Padrão dados: Sem-[nn]-mmm-YY
+SemanaDoAno_Num      - Coluna origem [SemanaIsoNum]
+SemanaData_Inicio    - Coluna origem [SemanaIsoInicio]
+SemanaData_Fim       - Coluna origem [SemanaIsoFim]
+SemanaPeriodo_Nome   - Coluna origem [SemanaPeriodo]         - Padrão dados: dd/mm/YYYY a dd/mm/YYYY
+
+--- QUINZENA ---
+--- Este conjunto de colunas é após a coluna [SemanaDoMesAnoPadraoNum]
+Quinzena_Index      - Coluna origem [QuinzenaIndice]
+** Quinzena_OffSet   - Coluna origem [QuinzenaOffset]
+QuinzenaMes_Num      - Coluna origem [QuinzenaDoMesNum]
+QuinzenaMes_Nome     - Coluna origem [QuinzenaMesNome]    - Padrão dados: Q-[n]-mmmm
+*** QuinzenaMes_Abrev - Padrão dados: Q-[n]-mmm
+QuinzenaMesAno_Serial - Coluna origem [QuinzenaMesAnoNum]  - Padrão dados: YYYYmm[nn]
+QuinzenaMesAno_Abrev - Coluna origem [QuinzenaMesAnoNome] - Padrão dados: Q-[n]-mmm-YY
+*** QuinzenaMesAno_Nome - Padrão dados: Q-[n]-mmmm-YY
+QuinzenaAno_Serial     - Coluna origem [QuinzenaMesAnoNum]  - Padrão dados: YYYYmm[nn]
+*** DataQuinzenaInicio - Padrão dados: dd/mm/YYYY
+*** DataQuinzenaFim    - Padrão dados: dd/mm/YYYY
+QuinzenaPeriodo_Nome - Coluna origem [QuinzenaPeriodo]    - Padrão dados: dd/mm/YYYY a dd/mm/YYYY
+
+--- BIMESTRE ---
+--- Este conjunto de colunas é após a coluna [SemestreAnoNomeAtual]
+Bimestre_Index    - Coluna origem [BimestreIndice]
+Bimestre_OffSet    - Coluna origem [BimestreOffSet]
+BimestreAno_Num    - Coluna origem [BimestreDoAnoNum] - Padrão dados: [n]onde [n] é o bimestre do ano.
+BimestreAno_Serial - Coluna origem [BimestreAnoNum]   - Padrão dados: YYYY[nn], onde [n] é o bimestre do ano.
+BimestreAno_Nome   - Coluna origem [BimestreAnoNome]  - Padrão dados: B[n]-YYYY
+*** BimestrePeriodo_Nome - dd/mm/YYYY a dd/mm/YYYY
+*** DataBimestreInicio -
+*** DataBimestreFim    -
+
+--- TRIMESTRE ---
+--- Este conjunto de colunas é após a coluna [MesAnoNomeAtual]
+Trimestre_Index - Coluna origem [TrimestreIndice]
+Trimestre_Offset - Coluna origem [TrimestreOffSet]
+TrimestreNum
+TrimestreInicio
+TrimestreFim
+TrimestreFim
+TrimestreAnoNum
+TrimestreAnoNome
+
+
+--- QUADRIMESTRE - Este conjunto de colunas DEVERÁ SER CRIADO
+
+
+--- SEMESTRE ---
+--- Este conjunto de colunas é após a coluna [QuinzenaMesAnoNomeAtual]
+Semestre_Index    - Coluna origem [SemestreIndice]
+Semestre_OffSet    - Coluna origem [SemestreOffSet]
+SemestreAno_Num    - Coluna origem [SemestreDoAnoNum]     - Padrão dados: [n]onde [n] é o semestre do ano.
+SemestreAno_Serial - Coluna origem [SemestreAnoNum]       - Padrão dados: YYYY[nn], onde [n] é o semestre do ano.
+SemestreAno_Nome   - Coluna origem [SemestreAnoNomeAtual] - Padrão dados: S[n]-YYYY
+*** SemestrePeriodo_Nome - dd/mm/YYYY a dd/mm/YYYY
+*** DataSemestreInicio -
+*** DataSemestreFim    -
+
+** Colunas que devem ser calculadas pelo Power Query
+pósfixo _OffSet - o resultado é a qtde de anos, meses, dias decorridos do inicio da tabela Calendario da aplicação
+
+*** Colunas novas
+
+- Colunas desnecessárias:
+AnoDecrescenteNome
+AnoDecrescenteNum
+MesNomeAtual
+MesNomeAbrevAtual
+MesAnoNomeAtual
+AnoIsoNum
+SemanaIsoIndice
+SemanaIsoOffSet
+SemanaDoMesNum
+SemanaNum
+SemanaIsoAnoNomeAtual
+SemanaIsoAnoNome
+AnoSemanalNum
+MesSemanalNum
+MesSemanalNome
+MesSemanalNomeAbrev
+MesAnoSemanalNum
+MesAnoSemanalNome
+SemanaDoMesPadraoNum
+SemanaDoMesAnoPadraoNome
+SemanaDoMesAnoPadraoNum
+QuinzenaMesNum
+QuinzenaMesAnoNomeAtual
+
+-- Colunas não utilizadas
+
+'`AnoDescrescenteNome`      SMALLINT NOT NULL, ',
+'`AnoNomeAtual`             VARCHAR(12) NOT NULL, ',
+'`AnoIsoNum`                SMALLINT NOT NULL, ',
+'`MesInicio`                DATE NOT NULL, ',
+'`MesFim`                   DATE NOT NULL, ',
+'`MesNomeAtual`             VARCHAR(13) NOT NULL, ',
+'`MesNomeAbrevAtual`        VARCHAR(13) NOT NULL, ',
+'`MesAnoNomeAtual`          VARCHAR(13) NOT NULL, ',
+'`SemanaIsoAnoNum`          MEDIUMINT NOT NULL, ',
+'`SemanaIsoAnoNome`         CHAR(8) NOT NULL, ',
+'`SemanaIso_INDEX`          TINYINT NOT NULL, ',
+'`SemanaIsoOffset`          SMALLINT NOT NULL, ',
+'`SemanaIsoAnoNomeAtual`    CHAR(8) NOT NULL, ',
+'`SemanaNum`                TINYINT NOT NULL, ',
+'`SemanaInicio`             DATE NOT NULL, ',
+'`SemanaFim`                DATE NOT NULL, ',
+'`SemanaAnoNomeAtual`       CHAR(8) NOT NULL, ',
+'`SemanaDoMesPadraoNum`     TINYINT NOT NULL, ',
+'`SemanaDoMesAnoPadraoNome` CHAR(8) NOT NULL, ',
+'`SemanaDoMesAnoPadraoNum`  MEDIUMINT NOT NULL, ',
+'`AnoSemanalNum`            TINYINT NOT NULL, ',
+'`MesSemanalNum`            TINYINT NOT NULL, ',
+'`MesSemanalNome`           VARCHAR(8) NOT NULL, ',
+'`MesSemanalNomeAbrev`      VARCHAR(3) NOT NULL, ',
+'`MesAnoSemanalNum`         MEDIUMINT NOT NULL, ',
+'`MesAnoSemanalNome`        CHAR(6) NOT NULL, ',
+'`QuinzenaPeriodo`          CHAR(23) NOT NULL, ',
+'`Quinzena_INDEX`           SMALLINT NOT NULL, ',
+'`QuinzenaOffset`           SMALLINT NOT NULL, ',
+'`QuinzenaMesAnoNomeAtual`  VARCHAR(15) NOT NULL, ',
+
+
+'`DataFutura`               TINYINT(1) NOT NULL'

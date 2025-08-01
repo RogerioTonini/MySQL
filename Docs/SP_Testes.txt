@@ -1,0 +1,32 @@
+DELIMITER $$
+DROP PORCEDURE IF EXISTS `testes` $$
+CREATE PROCEDURE `testes`(
+	IN v_DataInicial DATE
+)
+BEGIN
+    
+    SET @Dia = DAY(v_DataInicial);
+    SET @Mes = MONTH(v_DataInicial);
+    SET @Ano = YEAR(v_DataInicial);
+    SET @DataAtual = CURDATE();
+
+        v_DataInicial,
+        datediff(v_DataInicial, @DataAtual)    AS DataOffset,
+        date_format(v_DataInicial, '%d/%m/%Y') AS DataNomeAtual,
+        @Ano                                   AS AnoNum,
+        -- Primeira e última data do ano
+        date_format(v_DataInicial, '%Y-01-01') AS AnoInicio,
+        date_format(v_DataInicial, '%Y-12-31') AS AnoFim,
+        --
+        -- Ou pode-se utilizar a função MAKEDATE
+        -- makedate(YEAR(@data_inicial), 1)       AS AnoInicio,
+        -- makedate(YEAR(@data_inicial), 1) + INTERVAL 1 YEAR - INTERVAL 1 DAY AS AnoFim,
+        @Mes                                   AS MesNum,
+        @Dia                                   AS DiaNum,
+        --  Cálculo do Bimestre, Trimestre, Quadrimestre e Semestre de uma data
+        ceil(MONTH(v_DataInicial) / 2)         AS Bimestre,
+        ceil(MONTH(v_DataInicial) / 3)         AS Trimestre,
+        ceil(MONTH(v_DataInicial) / 4)         AS Quadrimestre,
+        ceil(MONTH(v_DataInicial) / 6)         AS Semestre;        
+END $$
+DELIMITER ;

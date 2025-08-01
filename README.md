@@ -18,7 +18,6 @@
             </td>
             <td align="left"> Verificar se o DB existe existe </td>
             <td align="left">
-                <p>fx_DB_Exist( v_Database )</p> 
                 <p>v_Database - Nome do DB</p>
             </td>
         </tr>
@@ -29,7 +28,6 @@
         </td>
             <td align="left"> Contar a quantidade de índices existentes. </td>
             <td align="left">
-                <p>fx_IDX_Exist(v_Database, v_table, v_idx_Name)</p>
                 <p>v_Database - Nome do DB</p>
                 <p>v_Table    - Nome da Tabela</p>
                 <p>v_idx_Name - Nome do arquivo do índice</p>
@@ -42,7 +40,6 @@
             </td>
             <td align="left"> Validar o comando SQL dinâmico. </td>
             <td align="left">
-                <p>fx_SQL_Valid(v_command)</p> 
                 <p>v_command - Comando SQL</p>
             </td>
         </tr>
@@ -52,7 +49,6 @@
             </td>
             <td align="left">Verificar se uma tabela existe em um banco de dados. </td>
             <td align="left">
-                <p>fx_TB_Exist(v_command)</p> 
                 <p>v_Database - Nome do DB</p>
                 <p>v_Table    - Nome da Tabela</p>
             </td>

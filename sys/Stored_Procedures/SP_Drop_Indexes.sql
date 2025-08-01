@@ -1,19 +1,3 @@
--- Author: Rogerio Tonini
--- Data: 25/07/2025
--- Versão: 1.0
--- URL: HTTP://www.github.com/RogerioTonini
--- Objetivo: Apagar índices de uma tabela específica, exceto o índice PRIMARY.
--- Esta procedure tenta excluir índices de uma tabela, com até 3 tentativas para cada índice.
--- Se não houver índices além do PRIMARY, retorna uma mensagem informativa.
--- Se ocorrer um erro ao excluir um índice, tenta novamente até 3 vezes.
---
--- Schema: sys
---
--- Utilização - Parâmetros:
--- v_Database: Nome do banco de dados onde a tabela está localizada.
--- v_Table: Nome da tabela da qual os índices serão excluídos.
--- v_Result: Variável de saída que indica se a operação foi bem-sucedida (TRUE) ou não (FALSE).
---
 CREATE DEFINER=`root`@`localhost` PROCEDURE `SP_Drop_Indexes`(
     IN v_Database VARCHAR(70),
     IN v_Table    VARCHAR(70),
@@ -32,7 +16,7 @@ BEGIN
         FROM INFORMATION_SCHEMA.STATISTICS
         WHERE TABLE_SCHEMA = v_Database
           AND TABLE_NAME = v_Table
-          AND INDEX_NAME <> 'PRIMARY';  
+          AND INDEX_NAME <> 'PRIMARY';
 
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
     

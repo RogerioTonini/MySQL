@@ -30,3 +30,33 @@ BEGIN
         ceil(MONTH(v_DataInicial) / 6)         AS Semestre;        
 END $$
 DELIMITER ;
+
+
+-- Defina os valores
+SET @Dt_Inicial := '2025-01-01';
+SET @QtdeLinhas := 100;
+
+-- Construa SQL dinâmico
+SET @sql := CONCAT('
+    SELECT 
+        DATE_ADD(''', @Dt_Inicial, ''', INTERVAL seq DAY) AS data
+    FROM (
+        SELECT @rownum := @rownum + 1 AS seq
+        FROM 
+            (SELECT 0 UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION 
+             SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) AS a,
+            (SELECT 0 UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION 
+             SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) AS b,
+            (SELECT 0 UNION SELECT 1 UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 UNION 
+             SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9) AS c,
+            (SELECT @rownum := -1) r
+        LIMIT ', @QtdeLinhas, '
+    ) AS sequencia;
+');
+
+-- Executa o SQL gerado
+PREPARE stmt FROM @sql;
+EXECUTE stmt;
+DEALLOCATE PREPARE stmt;
+
+Select * from c;

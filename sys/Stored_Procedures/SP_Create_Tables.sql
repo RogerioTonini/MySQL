@@ -57,7 +57,9 @@ BEGIN
 
 			-- Adiciona chave primária se informada
 			IF v_NomePrimKey IS NOT NULL AND v_NomePrimKey <> '' THEN
-				SET @sql := CONCAT( @sql, ', PRIMARY KEY (`', v_NomePrimKey, '`)' );
+				SET @sql := CONCAT(
+                    @sql, ', CONSTRAINT PK_', v_NomePrimKey, ' PRIMARY KEY (`', v_NomePrimKey, '`)' 
+				);
 			END IF;
 
 			-- Adiciona chave estrangeira se houver
@@ -73,7 +75,7 @@ BEGIN
             -- Salva o LOG na tabela T_alteracoes_LOG
             SET @mensagem = CONCAT( 'Tabela "', v_data, '`.`', v_NomeTabela, '" criada com sucesso.' );
             SELECT @mensagem AS status_msg;
-			CALL SP_Grava_Log_Alt_DB( v_data, v_NomeTabela, '', '', '', @mensagem );
+			CALL SP_Record_LOG( v_data, v_NomeTabela, '', '', '', @mensagem );
 		ELSE
 			-- Se a tabela existir verifica sua estrutura e compara com a estrutura definida no script
             SET v_colunas = v_Def_Coluna;
@@ -112,7 +114,7 @@ BEGIN
 
 					SET @mensagem = CONCAT( 'Coluna "', v_Col_Nome, '" adicionada à tabela ', v_NomeTabela );
                     SELECT @mensagem AS status_msg;
-                    CALL SP_Grava_Log_Alt_DB(
+                    CALL SP_Record_LOG(
 						v_data, v_NomeTabela, v_Col_Nome, 
                         CONCAT( v_Tb_Col_Tipo, '(', v_Tb_Col_Tamanho, ')' ),
 						CONCAT( v_Col_Tipo, '(', v_Col_Tamanho, ')' ), 
@@ -144,7 +146,7 @@ BEGIN
                                 
                                 SET @mensagem = CONCAT( 'Coluna "', v_Col_Nome, '" alterada para tamanho ', v_Col_Tamanho );
                                 SELECT @mensagem AS status_msg;
-								CALL SP_Grava_Log_Alt_DB(
+								CALL SP_Record_LOG(
 									v_data, v_NomeTabela, v_Col_Nome, 
                                     CONCAT( v_Tb_Col_Tipo, '(', v_Tb_Col_Tamanho, ')' ),
 									CONCAT( v_Col_Tipo, '(', v_Col_Tamanho, ')' ), 
@@ -153,7 +155,7 @@ BEGIN
                             ELSEIF v_Col_Tamanho < v_Tb_Col_Tamanho THEN
 								SET @mensagem = CONCAT( 'Coluna "', v_Col_Nome, '" não alterada: tamanho menor que o atual.' );
                                 SELECT @mensagem AS status_msg;
-								CALL SP_Grava_Log_Alt_DB(
+								CALL SP_Record_LOG(
 									v_data, v_NomeTabela, v_Col_Nome, 
                                     CONCAT( v_Tb_Col_Tipo, '(', v_Tb_Col_Tamanho, ')' ),
 									CONCAT( v_Col_Tipo, '(', v_Col_Tamanho, ')' ), 

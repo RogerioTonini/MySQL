@@ -1,0 +1,98 @@
+Relação das Stored Procedures (GENÉRICAS):
+SP_Create_DB - Cria um banco de Dados.
+SP_Create_DB_Tables - Cria as tabelas de um banco de dados.
+SP_Create_TB_Calendario - Popula os dados da tabela t_calendario.
+SP_Create_TB_Feriados - Popula a tabela t_feriados com todos os feriados mundiais, Nacionais e os prinicipais dos principais munícipios do Brasil.
+SP_Drop_Indexes - Apaga todos os índices diferentes de [PRIMARY] das tabelas.
+SP_Drop_Table - Apaga uma tabela em específico.
+SP_Drop_Table_Indexes - Apaga uma tabela em específico e seu índice [PRIMARY].
+SP_Record_LOG - Grava todas as alterações efetuadas na estrutura/gravação de dados nas tabelas.
+SP_SQL_Exec - Executa o comando SQL dinâmico em qualquer SP.
+
+Dependências:
+SP_SQL_Exec -> fx_SQL_Valid
+
+Relação das Stored Procedures (ESPECÍFICAS):
+SP_TB_Indices_Moedas - Relação de todas as tabelas/colunas do DB t_indices_moedas
+
+
+-- Tabela:  t_parametros - Dados:
+AnoCorrente      - 
+DataInicio_txt   - 01-01-1984
+DataFinal_txt    -
+ExtensaoArquivos - json
+Idioma           - pt-BR
+DataInicio       - 1984-01-01
+QtdeRegistros    - 20000
+URL_Padrao       - https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/
+
+-- Tabela t_calendario, Documentação :
+    -- 1-) Significado dos termos nos nomes das colunas:
+    -- _Abrev  - Abreviação
+    -- _Acm    - Acumulado (similar a saldo de algo)
+    -- _Nome   - Nome por extenso
+    -- _Num    - Número
+    -- _OffSet - Tempo decorrido em quantidade: Dias, Semanas, Quinzenas, Meses, Bimestres, Trimestres, Semestres 
+    -- _Qtd    - Quantidade acumulada
+    -- _Sigla  - Sigla. Normalmente representada pela primeira letra da palavra
+    -- Ref_    - Número representado em formato caractere
+    -- --------------------------------------------------------------------------------------------------------------
+	-- Padrão para armazenamento dos dados nas colunas:
+    -- 
+	-- Colunas DIA 
+	-- Observação: Não é necessário a coluna [Dia_INDEX], pois a coluna [NUM_INDEX] é similar
+	-- `DiaMesRef_Nome`   CHAR(2)     NOT NULL, -- Número do Dia do Mês em formato caractere de 2 dígitos
+	-- `DiaAno_Num`       SMALLINT    NOT NULL, -- Número do dia no Ano
+	-- `DiaSemana_Num`    TINYINT     NOT NULL,  -- Padrão: Segunda = 1 a Domingo = 7
+	-- `DiaSemana_Abrev`  CHAR(3)     NOT NULL,  -- Nome do dia abreviado
+	-- `DiaSemana_Nome`   VARCHAR(13) NOT NULL,  -- Nome do dia por extenso
+	-- `DiaUtil_Num`      BOOLEAN     NOT NULL,  -- É dia útil
+	-- `DiaUtilMes_Acm`   TINYINT     NOT NULL,  -- Acumulado de dias úteis no Mês 
+	-- `DiaUtilAno_Acm`   TINYINT     NOT NULL,  -- Acumulado de dias úteis no Ano
+	--
+	-- Colunas MES
+	-- `MesRef_Nome`    CHAR(2)    NOT NULL,  -- Número do mês em formato caractere de 2 dígito
+	-- `Mes_Abrev`      CHAR(3)    NOT NULL,  -- Nome abreviado
+	-- `Mes_Nome`       VARCHAR(8) NOT NULL,  -- Nome por extenso
+	-- `Mes_Sigla`      CHAR(1)    NOT NULL,  -- Primeira letra
+	-- `MesDoAno_Num`   MEDIUMINT  NOT NULL,  -- [AnoRef_Nome] & [MesRef_Nome], padrão dados: [YYYY][mm]
+	-- `MesDoAno_Abrev` CHAR(6)    NOT NULL,  -- [Mes_Abrev] & [AnoRef_Nome],   padrão: mmm/YYYY
+	-- `MesDoAno_Nome`  CHAR(13)   NOT NULL,  -- [Mes_Nome] & [Ano_Num],        padrão: mmmm/YYYY
+	-- `MesDoDia_Num`   SMALLINT   NOT NULL,  -- [MesRef_Nome] & [DiaRef_Nome], padrão: [mm][dd]
+	-- `MesDoDia_Abrev` CHAR(6)    NOT NULL,  -- [Mes_Abrev] & [DiaRef_Nome],   padrão: [mmm]/[dd]
+	--
+	-- Colunas ANO
+	-- `AnoRef_Nome`   CHAR(4)  NOT NULL,  -- Número do ano em formato caractere de 2 dígitos
+	--
+	-- Colunas SEMANA
+	-- `SemanaRefMes_Nome`   CHAR(2)  NOT NULL,  -- Número da Semana no Mês em formato caractere de 2 dígito
+	-- `SemanaDoMes_Abrev`   CHAR(15) NOT NULL,  -- [SemanaRefDoMes_Nome] & [Mes_Abrev], padrão dados: Sem-[nn]-mmm
+	-- `SemanaRefDoAno_Nome` CHAR(2)  NOT NULL,  -- Número da Semana no Ano em formato caractere de 2 dígitos
+	-- `SemanaDoAno_Abrev`   CHAR(15) NOT NULL,  -- [SemanaRefDoMes_Nome] & [AnoRef_Nome], padrão dados: Sem-[nn]-YYYY
+	-- `SemanaDoAno_Num`     SMALLINT NOT NULL,  -- [Ano_Num] & [SemanaDoAno_Num],         padrão dados: [YYYY][dd]
+	-- `SemanaPeriodo`       CHAR(23) NOT NULL,  -- padrão dados: dd/mm/YYYY a dd/mm/YYYY
+	--
+	-- Colunas QUINZENA
+	-- `QuinzenaRefMes_Nome` CHAR(1)     NOT NULL,  -- Número da Semana no Mês em formato caractere de 1 dígito
+	-- `QuinzenaDoMes_Abrev` CHAR(9)     NOT NULL,  -- [QuinzenaRefMes_Nome] & [Mes_Abrev], padrão dados: Qui [n]-mmm
+	-- `QuinzenaDoMes_Nome`  VARCHAR(14) NOT NULL,  -- [QuinzenaRefMes_Nome] & [Mes_Nome], padrão dados: Qui [n]-mmmm
+	--
+	-- Colunas BIMESTRE
+	-- `BimestreRefAno_Nome` CHAR(1)  NOT NULL,  -- Número do Bimestre no Ano em formato caractere de 1 dígito
+	-- `BimestreDoAno_Nome`  CHAR(8)  NOT NULL,  -- [BimestreRefAno_Nome] & [Ano_Nome], padrão dados: B [n]-YYYY
+	-- `BimestrePeriodo`     CHAR(23) NOT NULL,  -- padrão dados: dd/mm/YYYY a dd/mm/YYYY            
+	--
+	-- Colunas TRIMESTRE
+	-- `TrimestreRefAno_Nome` CHAR(1)  NOT NULL,  -- Número do Trimestre no Ano em formato caractere de 1 dígito
+	-- `TrimestreDoAno_Nome`  CHAR(8)  NOT NULL,  -- [TrimestreRefAno_Nome] & [Ano_Nome], padrão dados: T [n]-YYYY
+	-- `TrimestrePeriodo`     CHAR(23) NOT NULL,  -- padrão dados: dd/mm/YYYY a dd/mm/YYYY            
+	--
+	-- Colunas SEMESTRE
+	-- `SemestreRefAno_Nome` CHAR(1)  NOT NULL,  -- Número do Semestre no Ano em formato caractere de 1 dígito
+	-- `SemestreDoAno_Nome`  CHAR(8)  NOT NULL,  -- [SemestreRefAno_Nome] & [Ano_Nome], padrão dados: T [n]-YYYY
+	-- `SemestrePeriodo`     CHAR(23) NOT NULL,  -- padrão dados: dd/mm/YYYY a dd/mm/YYYY            
+	--
+	-- Colunas FECHAMENTO
+	-- `MesFechamentoRef_Nome`  CHAR(2)    NOT NULL,  -- Número do Mês de Fechamento em formato caractere de 2 dígitos
+	-- `MesAnoFechamento_Num`   MEDIUMINT  NOT NULL,  -- [AnoFechamento_Num] & [MesFechamentoRef_Nome], padrão dados: YYYYmm
+	-- `MesAnoFechamento_Abrev` CHAR(6)    NOT NULL,  -- [MesFechamento_Abrev] & [AnoFechamentoRef_Nome], padrão dados: mmm/YYYY

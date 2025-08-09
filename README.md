@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 
-## Funções, Stored Procedures criadas para ambientes SQL Server e MySQL
+## Funções, Stored Procedures criadas para MySQL
 <table border="1" style="width:100%">
     <thead>
         <tr>

@@ -1,14 +1,3 @@
-Relação das Stored Procedures (GENÉRICAS):
-SP_Create_DB - Cria um banco de Dados.
-SP_Create_DB_Tables - Cria as tabelas de um banco de dados.
-SP_Create_TB_Calendario - Popula os dados da tabela t_calendario.
-SP_Create_TB_Feriados - Popula a tabela t_feriados com todos os feriados mundiais, Nacionais e os prinicipais dos principais munícipios do Brasil.
-SP_Drop_Indexes - Apaga todos os índices diferentes de [PRIMARY] das tabelas.
-SP_Drop_Table - Apaga uma tabela em específico.
-SP_Drop_Table_Indexes - Apaga uma tabela em específico e seu índice [PRIMARY].
-SP_Record_LOG - Grava todas as alterações efetuadas na estrutura/gravação de dados nas tabelas.
-SP_SQL_Exec - Executa o comando SQL dinâmico em qualquer SP.
-
 Dependências:
 SP_SQL_Exec -> fx_SQL_Valid
 
@@ -96,3 +85,134 @@ URL_Padrao       - https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata
 	-- `MesFechamentoRef_Nome`  CHAR(2)    NOT NULL,  -- Número do Mês de Fechamento em formato caractere de 2 dígitos
 	-- `MesAnoFechamento_Num`   MEDIUMINT  NOT NULL,  -- [AnoFechamento_Num] & [MesFechamentoRef_Nome], padrão dados: YYYYmm
 	-- `MesAnoFechamento_Abrev` CHAR(6)    NOT NULL,  -- [MesFechamento_Abrev] & [AnoFechamentoRef_Nome], padrão dados: mmm/YYYY
+
+-- Nome das Variáveis das SP:
+v_Database      - Nome do banco de dados
+v_SP_Create_TBs - Nome da SP que cria as tabelas (SP_Create_DB)
+v_status_msg    - Mensagem de retorno do procedimento
+status_msg      - Título do retorno para v_status_msg
+@ok             - Variável de retorno da função: fx_SQL_Exec, 0 = OK, 1 = Erro
+@err_code       - Variável de retorno da função: fx_SQL_Exec, 0 = OK, qq outro código Erro
+@err_msg        - Variável de retorno da função: fx_SQL_Exec, '' = OK, Descrição do Erro
+
+v_Url   - URL da API
+v_Ext   - Extensão dos arquivos
+v_Dir   - Diretório de destino dos arquivos
+v_Tb    - Nome da tabela
+v_Fk    - Nome da chave estrangeira
+v_Ind   - Nome da coluna de índice
+v_Col   - Nome da coluna
+v_Tipo  - Tipo da coluna
+v_Valor - Valor da coluna
+
+
+
+v_Table         - Nome das tabela
+
+
+- Relação de Stored Procedures:
+
+SP_Create_DB - SP que inicia a criação
+	-Parâmetros de Entrada: v_Database  - Nome do DB
+							v_SP_Tables - Nome da SP que criará as Tabelas e Índices
+
+SP_Create_DB_Tables - Prepara a criação das Tabelas, Índices (Primários e demais), Chaves Estrangeiras
+	-Parâmetros de Entrada: v_Database  - Nome do DB
+							v_SP_Tables - Nome da SP que criará as Tabelas e Índices
+
+SP_Create_Tables - Cria as Tabelas e os Índices Primários
+	-Parâmetros de Entrada: v_Database   - Nome do DB
+							v_TableName  - Nome da Tabela
+							v_Def_Coluna - Relação das colunas da Tabela (v_TableName)
+	-Parâmetros de Saída..: v_result     - Resultado da operação - [True] = Execução com sucesso, [False] = Falha na execução
+							v_msg_exit   - Mensagem de retorno
+
+SP_Record_LOG - SP que grava os LOGs gerados
+	-Parâmetros de Entrada: v_Database      - Nome do DB
+							v_TableName     - Nome da Tabela
+							v_ColumnName    - Nome da coluna que sofrerá alteração
+							v_TipoTamExiste - Tipo, Tamanho Atual
+							v_TipoTamNovo   - Tipo, Tamanho Novo
+							v_Mensagem      - Descrição da alteração
+
+SP_Rename_Index - SP que renomeia os índices criados com o nome PRIMARY ( v_data_table, @ok_pk );
+	-Parâmetros de Entrada: v_Database - Nome do DB
+	-Parâmetros de Saída..: v_result   - Resultado da operação - [True] = Execução com sucesso, [False] = Falha na execução
+
+SP_SQL_Exec - SP que executa o comando SQL
+	-Parâmetros de Entrada: v_command    - Comando SQL em formato de texto
+	-Parâmetros de Saída..: v_result     - Resultado da operação - [True] = Execução com sucesso, [False] = Falha na execução
+							v_error_code - Código de erro
+							v_error_msg  - Mensagem de erro
+
+SP_TB_[v_Database] - Contém a relação das Tabelas, Colunas, Índices (primários e demais) e as Chaves Estrangeiras
+
+- Relação de Functions:
+
+fx_DB_Exist - Verifica se o DB Existe
+	-Parâmetros de Entrada: v_Database - Nome do DB
+	-Parâmetros de Saída..: v_existe   - Retorno da consulta - [True] = Existe, [False] = NÃO Existe
+
+fx_TB_Exist - Verifica se o DB Existe
+	-Parâmetros de Entrada: v_Database  - Nome do DB
+							v_TableName - Nome da Tabela
+	-Parâmetros de Saída..: v_existe    - Retorno da consulta - [True] = Existe, [False] = NÃO Existe
+
+fx_SQL_Valid - Valida se o parâmetro foi informado
+	-Parâmetros de Entrada: v_parâmetro - Nome da variável
+							v_error_msg - Mensagem de erro a ser apresentada se a variável  não foi informada.
+
+
+- Fluxograma
+
+SP_Create_DB
+	|
+	|-- fx_Valid_Parameter
+	|
+	|-- fx_DB_Exist
+	|
+	|-- SP_SQL_Exec		( implementar VERIFICAÇÃO )
+	|		|
+	|		|-- fx_SQL_Valid
+	|
+	|-- SP_Create_DB_Tables
+			|
+			|-- SP_TB_[v_Database]
+			|
+			|-- SP_Create_Tables
+			|		|
+			|		|-- fx_Valid_Parameter
+			|		|
+			|		|-- fx_TB_Exist
+			|		|
+			|		| -- SP_SQL_Exec
+			|				|
+			|				|-- fx_SQL_Valid
+			|				|
+			|				|-- SP_Record_LOG
+			|
+			|-- SP_Create_Sec_KEY
+			|		|
+			|		| -- SP_SQL_Exec
+			|		|
+			|		|-- SP_Record_LOG
+			|				|
+			|				|-- SP_SQL_Exec		( implementar código )
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
